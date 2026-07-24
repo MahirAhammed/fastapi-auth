@@ -1,10 +1,10 @@
 from supabase_client import supabase;
-from fastapi import HTTPException
-from models.auth import TokenResponse
+from models.auth import TokenResponse, UserMetadataResponse
+from core.exception import *
 
 def sign_up(email: str, password: str) -> dict:
     if not email or not password:
-        raise HTTPException(status_code= 400, detail= "Bad Request")
+        raise ValidationError()
     
     response = supabase.auth.sign_up({"email": email, "password": password})
     return response.user
@@ -12,19 +12,23 @@ def sign_up(email: str, password: str) -> dict:
 
 def login(email: str, password: str) -> TokenResponse:
     if not email or not password:
-        raise HTTPException(status_code= 400, detail= "Invalid login credentials")
-    
-    response = supabase.auth.sign_in_with_password({"email": email, "password": password})
+        raise ValidationError()
+
+    try:
+        response = supabase.auth.sign_in_with_password({"email": email, "password": password})
+    except Exception:
+        raise InvalidCredentialsError()
+
     return TokenResponse(
         access_token= response.session.access_token, 
         refresh_token= response.session.refresh_token
     )
 
 
-def get_access_token(authorization: str):
+def get_access_token(authorization: str) -> UserMetadataResponse:
     if not authorization:
-        raise HTTPException(status_code= 401, detail= "Access token required")
-
+        raise MissingTokenError()
+    
     auth_scheme = authorization.split(" ")
     if len(auth_scheme) != 2 or auth_scheme[0] != "Bearer" or not auth_scheme[1]:
-        raise HTTPException(status_code= 401, detail= "Access token required")
+        raise InvalidTokenError()
