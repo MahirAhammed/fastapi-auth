@@ -19,3 +19,12 @@ def login(email: str, password: str) -> TokenResponse:
         access_token= response.session.access_token, 
         refresh_token= response.session.refresh_token
     )
+
+
+def get_access_token(authorization: str):
+    if not authorization:
+        raise HTTPException(status_code= 401, detail= "Access token required")
+
+    auth_scheme = authorization.split(" ")
+    if len(auth_scheme) != 2 or auth_scheme[0] != "Bearer" or not auth_scheme[1]:
+        raise HTTPException(status_code= 401, detail= "Access token required")
