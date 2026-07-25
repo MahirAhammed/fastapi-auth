@@ -44,6 +44,7 @@ uvicorn app.main:app --reload
 |--------|----------|--------------|------------------|--------------------|
 | POST   | `/auth/signup`  | `{"email": string, "password": string}`     | `201` user object (`id`, `email`, `created_at`, ...) | `400` `{"error": "email and password are required"}` |
 | POST   | `/auth/login` | `{"email": string, "password": string}` | `200` `{"access_token": string, "refresh_token": string}` | `400` `{"error": "email and password are required"}`, `401` `{"error": "Invalid login credentials"}` |
+| GET | `/public/info` | — | `{"message": "Welcome stranger! This info is public." }` | — |
 
 ### Protected Endpoints
 
