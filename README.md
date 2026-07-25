@@ -2,6 +2,8 @@
 A lightweight FastAPI backend using Supabase as the authentication provider. It includes signup, login, logout, and token-protected routes, with Supabase issuing and validating JWTs on the server's behalf.
 
 ## File structure
+
+```
 app/
 ├── core/
 │   ├── exceptions.py       # custom error classes (CustomException and subclasses)
@@ -12,6 +14,7 @@ app/
 ├── services/               # Implementation of business logic
 ├── supabase_client.py      # shared Supabase client instance
 └── main.py                 # app entrypoint
+```
 
 ## Environment variables
 - Copy .env.example to .env and replace in real values:
@@ -22,14 +25,13 @@ app/
 |SUPABASE_KEY | Supabase anon/public key (Settings -> API -> Project API keys)|
 
 ## Install & Run it
-> Setup a python virtual env and install dependencies:
+- Setup a python virtual env and install dependencies:
 ```bash
 python3 -m venv venv
 source /venv/bin/activate
 pip instal -r requirements.txt
 ```
-
-> Run the application
+- Run the application
 ```bash
 uvicorn app.main:app --reload
 ```
