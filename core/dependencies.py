@@ -1,17 +1,15 @@
 from typing import Annotated
 from fastapi import Header, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from supabase_client import supabase
 from core.exception import MissingTokenError, InvalidTokenError
 
-def _get_access_token(authorization: Annotated[str | None, Header()] = None):
-    if not authorization:
-        raise MissingTokenError()
-        
-    auth_scheme = authorization.split(" ")
-    if len(auth_scheme) != 2 or auth_scheme[0] != "Bearer" or not auth_scheme[1]:
-        raise MissingTokenError()
+security = HTTPBearer(auto_error= False)
 
-    return auth_scheme[1]
+def _get_access_token(credentials: Annotated[HTTPAuthorizationCredentials , Depends(security)] = None):
+    if not credentials or not credentials.credentials:
+        raise MissingTokenError()
+    return credentials.credentials
 
 def get_current_user(token: Annotated[str, Depends(_get_access_token)]) -> dict:
     try:
