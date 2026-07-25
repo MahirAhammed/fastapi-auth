@@ -24,23 +24,8 @@ def login(email: str, password: str) -> TokenResponse:
         refresh_token= response.session.refresh_token
     )
 
-
-def get_profile(authorization: str) -> dict:
-    if not authorization:
-        raise MissingTokenError()
-    
-    auth_scheme = authorization.split(" ")
-    if len(auth_scheme) != 2 or auth_scheme[0] != "Bearer" or not auth_scheme[1]:
-        raise MissingTokenError()
-
+def logout():
     try:
-        response = supabase.auth.get_user(auth_scheme[1])
+        supabase.auth.sign_out()
     except Exception:
         raise InvalidTokenError()
-
-    return {
-        "id": response.user.id,
-        "email": response.user.email,
-        "created_at": response.user.created_at
-    }
-    
