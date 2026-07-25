@@ -59,4 +59,4 @@ uvicorn app.main:app --reload
 
 ## Swagger-UI
 - Interactive docs available at `http://127.0.0.1:8000/docs` after running the application
-[Swagger](/swagger.png)
+![Swagger](./swagger.png)
