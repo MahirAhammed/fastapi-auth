@@ -9,7 +9,7 @@ class CustomException(Exception):
 
 class ValidationError(CustomException):
     status_code = 400
-    message = "Bad request"
+    message = "Email and password are required"
 
 
 class InvalidCredentialsError(CustomException):
