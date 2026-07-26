@@ -60,3 +60,10 @@ uvicorn app.main:app --reload
 ## Swagger-UI
 - Interactive docs available at `http://127.0.0.1:8000/docs` after running the application
 ![Swagger](./swagger.png)
+
+---
+
+## Extras
+
+#### Inside JWT
+A JWT's payload is a base64 encoded JSON, which contains claims like the user's ID, role, and an expiry timestamp, plus a cryptographic signature that lets the server verify the payload hasn not been tampered with. This information is unencrypted, so anyone holding the token can decode the payload instantly (such as using hwt.io), so the purpose of JWT is to provde authenticity.
