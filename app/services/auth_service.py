@@ -29,3 +29,18 @@ def logout():
         supabase.auth.sign_out()
     except Exception:
         raise InvalidTokenError()
+
+
+def refresh_access_token(token: str) -> dict:
+    if not token:
+        raise ValidationError("Refresh token required")
+
+    try:
+        response = supabase.auth.refresh_session(refresh_token= token)
+    except Exception:
+        raise InvalidTokenError()
+
+    return {
+        "access_token": response.session.access_token,
+        "refresh_token": response.session.refresh_token
+    }

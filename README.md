@@ -77,3 +77,6 @@ Admin access is controlled via an `ADMIN_EMAILS` list in `.env` for simplicity. 
 - **403 Forbidden** = a valid token was presented, but that user is not authorized for the request.
 
 ---
+
+#### Refresh token
+Access tokens are short-lived to limit the damage period if a token is stolen or leaked, and since it is stateless and unrevocable, a shorter duration reduces the misuse of a compromised token.

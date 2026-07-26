@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from app.services import auth_service
 from app.core.dependencies import get_current_user
-from app.models.auth import AuthRequest, TokenResponse
+from app.models.auth import AuthRequest, TokenResponse, RefreshTokenRequest
 
 router = APIRouter(prefix= "/auth", tags= ["auth"])
 
@@ -16,3 +16,7 @@ def login(req: AuthRequest):
 @router.post("/logout", status_code= 204)
 def logout(user= Depends(get_current_user)):
     auth_service.logout()
+
+@router.post("/refresh", status_code= 200)
+def refresh(req:RefreshTokenRequest):
+    return auth_service.refresh_access_token(req.refresh_token)
