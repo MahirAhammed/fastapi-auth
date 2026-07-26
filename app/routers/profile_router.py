@@ -1,7 +1,5 @@
-from typing import Annotated
 from fastapi import APIRouter, Header, Depends
-from app.services import auth_service
-from app.core.dependencies import get_current_user
+from app.core.dependencies import get_current_user, get_admin
 from app.models.auth import UserMetadataResponse
 
 router = APIRouter(tags= ["profile"])
@@ -17,3 +15,7 @@ def protected(user= Depends(get_current_user)):
 @router.get("/protected/dashboard", status_code= 200)
 def protected(user= Depends(get_current_user)):
     return {"message": "Dashboard info"}
+
+@router.get("/protected/analytics", status_code= 200)
+def protected(user = Depends(get_admin)):
+    return {"message": f"Welcome admin, {user.email}"}

@@ -23,6 +23,7 @@ app/
 |---------------|----------------|
 |SUPABASE_URL | Supabase project URL (Settings -> API -> Project URL), no trailing slash|
 |SUPABASE_KEY | Supabase anon/public key (Settings -> API -> Project API keys)|
+|ADMIN_EMAILS (extra)| Comma seperated admin emails for authorization (admin1@example.com,admin2@example.com)|
 
 ## Install & Run it
 - Setup a python virtual env and install dependencies:
@@ -67,3 +68,12 @@ uvicorn app.main:app --reload
 
 #### Inside JWT
 A JWT's payload is a base64 encoded JSON, which contains claims like the user's ID, role, and an expiry timestamp, plus a cryptographic signature that lets the server verify the payload hasn not been tampered with. This information is unencrypted, so anyone holding the token can decode the payload instantly (such as using hwt.io), so the purpose of JWT is to provde authenticity.
+---
+
+#### Authorization
+Admin access is controlled via an `ADMIN_EMAILS` list in `.env` for simplicity. In `dependencies.py`, the `get_admin` builds on the existing token guard (`get_current_user`), then checks if the verified user's email is in `ADMINS` list.
+
+- **401 Unauthorized** = no valid token presented. The server cannot verify the identity of user.
+- **403 Forbidden** = a valid token was presented, but that user is not authorized for the request.
+
+---

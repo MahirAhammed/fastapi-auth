@@ -1,8 +1,9 @@
 from typing import Annotated
-from fastapi import Header, Depends
+from fastapi import Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from app.supabase_client import supabase
-from app.core.exception import MissingTokenError, InvalidTokenError
+from app.core.config import ADMINS
+from app.core.exception import MissingTokenError, InvalidTokenError, ForbiddenError
 
 security = HTTPBearer(auto_error= False)
 
@@ -21,3 +22,9 @@ def get_current_user(token: Annotated[str, Depends(_get_access_token)]) -> dict:
         raise InvalidTokenError()
 
     return response.user
+
+def get_admin(user: Annotated[dict, Depends(get_current_user)]):
+    email = user.email or ""
+    if email not in ADMINS:
+        raise ForbiddenError()
+    return user

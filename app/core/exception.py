@@ -25,3 +25,7 @@ class MissingTokenError(CustomException):
 class InvalidTokenError(CustomException):
     status_code = 401
     message = "Invalid or expired token"
+
+class ForbiddenError(CustomException):
+    status_code = 403
+    message = "Adming only endpoint"
